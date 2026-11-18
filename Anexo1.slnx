@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="MenuGeneral/MenuGeneral.csproj" />
+  <Project Path="ProyectoArray/ProyectoArray.csproj" />
+  <Project Path="ProyectoDecimales/ProyectoDecimales.csproj" />
+  <Project Path="ProyectoNumero/ProyectoNumero.csproj" />
+  <Project Path="ProyectoString/ProyectoString.csproj" />
+</Solution>
