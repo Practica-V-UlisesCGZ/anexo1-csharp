@@ -18,6 +18,8 @@ public static class MenuArray
             Console.WriteLine("4. Calcular media");
             Console.WriteLine("5. Calcular mediana");
             Console.WriteLine("6. Ordenar de menor a mayor");
+            Console.WriteLine("7. Calcular desviación típica");
+            Console.WriteLine("8. Binarizar según un número n");
             Console.WriteLine("0. Volver");
             Console.Write("Elige una opción: ");
 
@@ -29,10 +31,26 @@ public static class MenuArray
                 case "4": if (HayDatos()) Console.WriteLine($"Media: {Fmt(Media(datos))}"); break;
                 case "5": if (HayDatos()) Console.WriteLine($"Mediana: {Fmt(Mediana(datos))}"); break;
                 case "6": if (HayDatos()) Console.WriteLine($"Ordenado: {Formato(Ordenar(datos))}"); break;
+                case "7": if (HayDatos()) Console.WriteLine($"Desviación típica: {Fmt(DesviacionTipica(datos))}"); break;
+                case "8": if (HayDatos()) OpcionBinarizar(); break;
                 case "0": volver = true; break;
                 default: Console.WriteLine("Opción no válida."); break;
             }
         }
+    }
+
+    private static void OpcionBinarizar()
+    {
+        Console.Write("Introduce el número n: ");
+        string? texto = Console.ReadLine();
+
+        if (!double.TryParse((texto ?? "").Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture, out double n))
+        {
+            Console.WriteLine("Número no válido.");
+            return;
+        }
+
+        Console.WriteLine($"Array binarizado: {Formato(Binarizar(datos, n))}");
     }
 
     private static double[] LeerArray()
@@ -101,6 +119,23 @@ public static class MenuArray
         int mitad = o.Length / 2;
         if (o.Length % 2 == 1) return o[mitad];
         return (o[mitad - 1] + o[mitad]) / 2;
+    }
+
+    public static double DesviacionTipica(double[] a)
+    {
+        double media = Media(a);
+        double sumaCuadrados = 0;
+        foreach (double n in a)
+            sumaCuadrados += (n - media) * (n - media);
+        return Math.Sqrt(sumaCuadrados / a.Length);
+    }
+
+    public static double[] Binarizar(double[] a, double n)
+    {
+        double[] resultado = new double[a.Length];
+        for (int i = 0; i < a.Length; i++)
+            resultado[i] = a[i] < n ? 0 : 1;
+        return resultado;
     }
 
     private static string Fmt(double n) => n.ToString("0.##", CultureInfo.InvariantCulture);
