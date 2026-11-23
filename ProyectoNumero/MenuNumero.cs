@@ -11,6 +11,9 @@ public static class MenuNumero
             Console.WriteLine("1. Comprobar si es primo");
             Console.WriteLine("2. Calcular el factorial");
             Console.WriteLine("3. Convertir segundos a horas, minutos y segundos");
+            Console.WriteLine("4. Mostrar los 15 primeros números de Pell");
+            Console.WriteLine("5. Comprobar si es un número de Armstrong");
+            Console.WriteLine("6. Comprobar si tiene todos sus dígitos diferentes");
             Console.WriteLine("0. Volver");
             Console.Write("Elige una opción: ");
 
@@ -19,6 +22,9 @@ public static class MenuNumero
                 case "1": OpcionPrimo(); break;
                 case "2": OpcionFactorial(); break;
                 case "3": OpcionSegundos(); break;
+                case "4": OpcionPell(); break;
+                case "5": OpcionArmstrong(); break;
+                case "6": OpcionDigitos(); break;
                 case "0": volver = true; break;
                 default: Console.WriteLine("Opción no válida."); break;
             }
@@ -62,6 +68,24 @@ public static class MenuNumero
         Console.WriteLine($"{s} segundos = {h} h, {m} min, {seg} s");
     }
 
+    private static void OpcionPell()
+    {
+        Console.WriteLine("Los 15 primeros números de Pell:");
+        Console.WriteLine(string.Join(", ", Pell(15)));
+    }
+
+    private static void OpcionArmstrong()
+    {
+        if (!LeerEntero("Introduce un número entero: ", out long n)) return;
+        Console.WriteLine(EsArmstrong(n) ? $"{n} es un número de Armstrong." : $"{n} no es un número de Armstrong.");
+    }
+
+    private static void OpcionDigitos()
+    {
+        if (!LeerEntero("Introduce un número entero: ", out long n)) return;
+        Console.WriteLine(DigitosDiferentes(n) ? $"{n} tiene todos sus dígitos diferentes." : $"{n} tiene dígitos repetidos.");
+    }
+
     public static bool EsPrimo(long n)
     {
         if (n < 2) return false;
@@ -81,5 +105,39 @@ public static class MenuNumero
     public static (long horas, long minutos, long segundos) ConvertirSegundos(long total)
     {
         return (total / 3600, (total % 3600) / 60, total % 60);
+    }
+
+    public static long[] Pell(int cantidad)
+    {
+        long[] serie = new long[cantidad];
+        for (int i = 0; i < cantidad; i++)
+        {
+            if (i == 0) serie[i] = 0;
+            else if (i == 1) serie[i] = 1;
+            else serie[i] = 2 * serie[i - 1] + serie[i - 2];
+        }
+        return serie;
+    }
+
+    public static bool EsArmstrong(long n)
+    {
+        if (n < 0) return false;
+        string digitos = n.ToString();
+        int cantidad = digitos.Length;
+        long suma = 0;
+        foreach (char c in digitos)
+        {
+            long potencia = 1;
+            for (int i = 0; i < cantidad; i++)
+                potencia *= c - '0';
+            suma += potencia;
+        }
+        return suma == n;
+    }
+
+    public static bool DigitosDiferentes(long n)
+    {
+        string digitos = Math.Abs(n).ToString();
+        return digitos.Distinct().Count() == digitos.Length;
     }
 }
